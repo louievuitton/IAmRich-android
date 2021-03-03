@@ -7,13 +7,15 @@ public class User {
     private String lastName;
     private String email;
     private String password;
+    private int diamondSize;
 
-    public User(int id, String firstName, String lastName, String email, String password) {
+    public User(int id, String firstName, String lastName, String email, String password, int diamondSize) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.diamondSize = diamondSize;
     }
 
     @Override
@@ -66,4 +68,8 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public int getDiamondSize() { return diamondSize; }
+
+    public void setDiamondSize(int diamondSize) { this.diamondSize = diamondSize; }
 }

@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        this.deleteDatabase("user_db");
 //        fragmentPageAdapter = new FragmentPageAdapter(getSupportFragmentManager());
         viewPager = findViewById(R.id.container);
         setupPager(viewPager);

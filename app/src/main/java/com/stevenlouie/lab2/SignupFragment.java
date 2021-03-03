@@ -46,13 +46,15 @@ public class SignupFragment extends Fragment {
                     emailWarning.setVisibility(View.INVISIBLE);
                     passwordWarning.setVisibility(View.INVISIBLE);
 
-                    User user = new User(-1, firstNameEditText.getText().toString(), lastNameEditText.getText().toString(), emailEditText.getText().toString(), passwordEditText.getText().toString());
+                    User user = new User(-1, firstNameEditText.getText().toString(), lastNameEditText.getText().toString(), emailEditText.getText().toString(), passwordEditText.getText().toString(), 50);
                     Database db = new Database(getActivity());
                     boolean success = db.signup(user);
                     if (success) {
                         Toast.makeText(getActivity(), "Successfully signed up.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(), IAmRichActivity.class);
                         intent.putExtra("name", firstNameEditText.getText().toString());
+                        intent.putExtra("email", emailEditText.getText().toString());
+                        intent.putExtra("maxRich", false);
                         startActivity(intent);
                     }
                     else {
@@ -74,33 +76,36 @@ public class SignupFragment extends Fragment {
 
     private boolean validateData() {
         if (firstNameEditText.getText().toString().equals("")) {
+            firstNameWarning.setText("Please enter a valid first name.");
             firstNameWarning.setVisibility(View.VISIBLE);
             return false;
         }
         if (lastNameEditText.getText().toString().equals("")) {
+            lastNameWarning.setText("Please enter a valid last name.");
             lastNameWarning.setVisibility(View.VISIBLE);
             return false;
         }
         if (emailEditText.getText().toString().equals("")) {
+            emailWarning.setText("Please enter a valid email.");
             emailWarning.setVisibility(View.VISIBLE);
             return false;
         }
         if (passwordEditText.getText().toString().equals("")) {
+            passwordWarning.setText("Please enter a valid password.");
             passwordWarning.setVisibility(View.VISIBLE);
             return false;
         }
 
         String emailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-//        Pattern pattern = Pattern.compile(emailRegex);
         if (!Pattern.compile(emailRegex).matcher(emailEditText.getText().toString()).matches()) {
-            // enter valid email
+            emailWarning.setText("Please enter a valid email.");
             emailWarning.setVisibility(View.VISIBLE);
             return false;
         }
 
-        String passwordRegex = "^[a-zA-Z0-9]$";
+        String passwordRegex = "^[a-zA-Z0-9]{8,}$";
         if (!Pattern.compile(passwordRegex).matcher(passwordEditText.getText().toString()).matches()) {
-            // enter valid password
+            passwordWarning.setText("Password cannot contain special characters and must have at least 8 characters");
             passwordWarning.setVisibility(View.VISIBLE);
             return false;
         }

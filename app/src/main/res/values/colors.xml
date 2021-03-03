@@ -9,4 +9,5 @@
     <color name="button">#FF9800</color>
     <color name="label">#FADD83</color>
     <color name="warning">#FF0000</color>
+    <color name="link">#2C3FA8</color>
 </resources>

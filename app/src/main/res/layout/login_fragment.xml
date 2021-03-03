@@ -101,7 +101,7 @@
         app:layout_constraintGuide_begin="81dp" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/passwordWarning"
         android:layout_width="309dp"
         android:layout_height="22dp"
         android:text="Please enter a valid password."

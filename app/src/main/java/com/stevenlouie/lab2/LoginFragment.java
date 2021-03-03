@@ -41,18 +41,25 @@ public class LoginFragment extends Fragment {
                     passwordWarning.setVisibility(View.INVISIBLE);
 
                     Database db = new Database(getActivity());
-                    String success = db.login(emailEditText.getText().toString(), passwordEditText.getText().toString());
-                    if (!success.equals("")) {
+                    boolean success = db.login(emailEditText.getText().toString(), passwordEditText.getText().toString());
+                    if (success) {
                         Toast.makeText(getActivity(), "Successfully logged in.", Toast.LENGTH_SHORT).show();
+                        String[] response = db.checkIfElonRich(emailEditText.getText().toString());
                         Intent intent = new Intent(getActivity(), IAmRichActivity.class);
-                        intent.putExtra("name", success);
+                        intent.putExtra("name", response[0]);
+                        intent.putExtra("email", emailEditText.getText().toString());
+                        if (response[1].equals("250")) {
+                            intent.putExtra("maxRich", true);
+                        }
+                        else {
+                            intent.putExtra("maxRich", false);
+                        }
                         startActivity(intent);
                     }
                     else {
                         Toast.makeText(getActivity(), "User is not registered, please sign up.", Toast.LENGTH_LONG).show();
                     }
                 }
-
             }
         });
 
@@ -69,10 +76,12 @@ public class LoginFragment extends Fragment {
 
     private boolean validateData() {
         if (emailEditText.getText().toString().equals("")) {
+            emailWarning.setText("Please enter a valid email.");
             emailWarning.setVisibility(View.VISIBLE);
             return false;
         }
         if (passwordEditText.getText().toString().equals("")) {
+            passwordWarning.setText("Please enter a valid password.");
             passwordWarning.setVisibility(View.VISIBLE);
             return false;
         }
@@ -80,7 +89,7 @@ public class LoginFragment extends Fragment {
         String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
         Pattern pattern = Pattern.compile(regex);
         if (!pattern.matcher(emailEditText.getText().toString()).matches()) {
-            // enter valid email
+            emailWarning.setText("Please enter a valid email.");
             emailWarning.setVisibility(View.VISIBLE);
             return false;
         }
