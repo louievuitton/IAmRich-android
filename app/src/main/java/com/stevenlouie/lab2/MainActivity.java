@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-//    private FragmentPageAdapter fragmentPageAdapter;
     private ViewPager viewPager;
 
     @Override
@@ -15,12 +14,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        this.deleteDatabase("user_db");
-//        fragmentPageAdapter = new FragmentPageAdapter(getSupportFragmentManager());
         viewPager = findViewById(R.id.container);
         setupPager(viewPager);
     }
 
+    // used to setup the fragment manager to handle all fragments
     private void setupPager(ViewPager pager) {
         FragmentPageAdapter adapter = new FragmentPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new HomeFragment());
@@ -29,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         pager.setAdapter(adapter);
     }
 
+    // sets the current fragment to the one user has clicked on
     public void setViewPager(int fragmentNumber) {
         viewPager.setCurrentItem(fragmentNumber);
     }

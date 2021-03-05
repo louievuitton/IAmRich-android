@@ -26,6 +26,8 @@ public class SignupFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.signup_fragment, container, false);
+
+        // initialize all UI elements on the page
         firstNameEditText = view.findViewById(R.id.firstNameEditText);
         lastNameEditText = view.findViewById(R.id.lastNameEditText);
         emailEditText = view.findViewById(R.id.emailEditText);
@@ -37,6 +39,8 @@ public class SignupFragment extends Fragment {
         emailWarning = view.findViewById(R.id.emailWarning);
         passwordWarning = view.findViewById(R.id.passwordWarning);
 
+        // handles signup button clicked
+        // if data entered is successful, save user data inside SQLite database and navigate user to the IAmRichActivity
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +68,7 @@ public class SignupFragment extends Fragment {
             }
         });
 
+        // navigates user to the login page when clicked
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,42 +79,66 @@ public class SignupFragment extends Fragment {
         return view;
     }
 
+    // helper function used to validate whether input fields are valid
     private boolean validateData() {
+        boolean valid = true;
         if (firstNameEditText.getText().toString().equals("")) {
             firstNameWarning.setText("Please enter a valid first name.");
             firstNameWarning.setVisibility(View.VISIBLE);
-            return false;
+            valid = false;
+        }
+        else {
+            firstNameWarning.setVisibility(View.INVISIBLE);
         }
         if (lastNameEditText.getText().toString().equals("")) {
             lastNameWarning.setText("Please enter a valid last name.");
             lastNameWarning.setVisibility(View.VISIBLE);
-            return false;
+            valid = false;
+        }
+        else {
+            lastNameWarning.setVisibility(View.INVISIBLE);
         }
         if (emailEditText.getText().toString().equals("")) {
             emailWarning.setText("Please enter a valid email.");
             emailWarning.setVisibility(View.VISIBLE);
-            return false;
+            valid = false;
+        }
+        else {
+            emailWarning.setVisibility(View.INVISIBLE);
         }
         if (passwordEditText.getText().toString().equals("")) {
             passwordWarning.setText("Please enter a valid password.");
             passwordWarning.setVisibility(View.VISIBLE);
-            return false;
+            valid = false;
+        }
+        else {
+            passwordWarning.setVisibility(View.INVISIBLE);
         }
 
         String emailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
         if (!Pattern.compile(emailRegex).matcher(emailEditText.getText().toString()).matches()) {
             emailWarning.setText("Please enter a valid email.");
             emailWarning.setVisibility(View.VISIBLE);
-            return false;
+            valid = false;
+        }
+        else {
+            emailWarning.setVisibility(View.INVISIBLE);
         }
 
         String passwordRegex = "^[a-zA-Z0-9]{8,}$";
         if (!Pattern.compile(passwordRegex).matcher(passwordEditText.getText().toString()).matches()) {
-            passwordWarning.setText("Password cannot contain special characters and must have at least 8 characters");
+            passwordWarning.setText("Passwords cannot contain special characters and must have at least 8 characters");
             passwordWarning.setVisibility(View.VISIBLE);
-            return false;
+            valid = false;
+        }
+        else {
+            passwordWarning.setVisibility(View.INVISIBLE);
         }
 
-        return true;
+        if (!valid) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

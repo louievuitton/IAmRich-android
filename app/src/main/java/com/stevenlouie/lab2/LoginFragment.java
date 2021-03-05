@@ -26,6 +26,8 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_fragment, container, false);
+
+        // initializing all UI elements on the page
         emailEditText = view.findViewById(R.id.emailEditText);
         passwordEditText = view.findViewById(R.id.passwordEditText);
         signupBtn = view.findViewById(R.id.signupBtn);
@@ -33,6 +35,8 @@ public class LoginFragment extends Fragment {
         emailWarning = view.findViewById(R.id.emailWarning);
         passwordWarning = view.findViewById(R.id.passwordWarning);
 
+        // handles login button pressed and fetches data from SQLite database to validate whether data entered is valid
+        // if successfull navigate user to the IAmRichActivity
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,9 +50,11 @@ public class LoginFragment extends Fragment {
                         Toast.makeText(getActivity(), "Successfully logged in.", Toast.LENGTH_SHORT).show();
                         String[] response = db.checkIfElonRich(emailEditText.getText().toString());
                         Intent intent = new Intent(getActivity(), IAmRichActivity.class);
+
+                        // storing user data to be passed to the next activity using intent
                         intent.putExtra("name", response[0]);
                         intent.putExtra("email", emailEditText.getText().toString());
-                        if (response[1].equals("250")) {
+                        if (response[1].equals("300")) {
                             intent.putExtra("maxRich", true);
                         }
                         else {
@@ -63,6 +69,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        // transitions user to the signup page when button is clicked
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,20 +77,27 @@ public class LoginFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
+    // helper function used to validate whether input fields are valid for logging in
     private boolean validateData() {
+        boolean valid = true;
         if (emailEditText.getText().toString().equals("")) {
             emailWarning.setText("Please enter a valid email.");
             emailWarning.setVisibility(View.VISIBLE);
-            return false;
+            valid = false;
+        }
+        else {
+            emailWarning.setVisibility(View.INVISIBLE);
         }
         if (passwordEditText.getText().toString().equals("")) {
             passwordWarning.setText("Please enter a valid password.");
             passwordWarning.setVisibility(View.VISIBLE);
-            return false;
+            valid = false;
+        }
+        else {
+            passwordWarning.setVisibility(View.INVISIBLE);
         }
 
         String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
@@ -91,9 +105,17 @@ public class LoginFragment extends Fragment {
         if (!pattern.matcher(emailEditText.getText().toString()).matches()) {
             emailWarning.setText("Please enter a valid email.");
             emailWarning.setVisibility(View.VISIBLE);
-            return false;
+            valid = false;
+        }
+        else {
+            emailWarning.setVisibility(View.INVISIBLE);
         }
 
-        return true;
+        if (!valid) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 }
